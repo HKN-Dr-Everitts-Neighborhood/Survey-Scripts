@@ -1,0 +1,24 @@
+Step 1: Install python (I'm using Python 2.7)
+
+Google for this.  Once you do this, you'll probably want to add python to your path.
+
+Step 3: Install pip
+
+On Windows, you'll need to install easy_install first.  These instructions work: https://python-guide.readthedocs.org/en/latest/starting/install/win/
+
+First, download the python-distribute script.  Then run it from an elevated command prompt (go to the start menu, search for cmd, right click the result and run as administrator), then cd to the folder with the python-distribute script and run it. You have now installed easy_install!
+
+Ok, this isn't quite what we want.
+	cd <Python Path>\Scripts
+	easy_install.exe pip
+	
+You may want to add the Scripts directory to your path, so that pip.exe is accessible from the command line; otherwise you'll have to be in this directory to execute it later.
+
+Step 4: Install needed packages (selenium, requests, beautifulsoup).
+
+Via elevated command prompt (pip.exe is only for windows; everywhere else it's just pip):
+	pip.exe install -U selenium
+	pip.exe install requests
+	pip.exe install beautifulsoup
+
+
