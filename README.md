@@ -9,6 +9,7 @@ Scripts
 * generate_reports.py: makes 2 reports per survey - an html summary report, and a csv full report (single response checked).
 * download_reports.py: downloads all reports that have been generated.  Note the global variable which specifies the folder to download to.
 * add_user.py: goes through all surveys and shares them with a specified user giving them the specified privileges.
+* survey_stats.py: a simple script that counts the number of responses in a set of data downloaded by download_reports.
 
 Dependencies
 ============
