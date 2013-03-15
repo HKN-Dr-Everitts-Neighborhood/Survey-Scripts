@@ -8,15 +8,35 @@ from secrets import netid, password
 
 import unittest, time, re
 
-class GenerateReports(unittest.TestCase):
+text_field_ids = {
+    "viewer": "viewer_add",
+    "editor": "editor",
+    "admin": "admin_add"
+}
+
+button_ids = {
+    "viewer": "results_view_add",
+    "editor": "editor_add",
+    "admin": "admin_add_user"
+}
+
+class AddUser(unittest.TestCase):
     def setUp(self):
+        # Get user input
+        self.new_user = raw_input("netid of new user: ")
+        
+        self.new_user_type = ""
+        while (self.new_user_type not in text_field_ids):
+            self.new_user_type = raw_input("user type (editor, admin, or viewer): ")
+        
+        # Now open Firefox
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
         self.base_url = "https://illinois.edu/"
         self.verificationErrors = []
         self.accept_next_alert = True
     
-    def test_generate_reports(self):
+    def test_add_user(self):
         driver = self.driver
         driver.get(self.base_url + "toolbox")
         
@@ -29,21 +49,29 @@ class GenerateReports(unittest.TestCase):
         driver.find_element_by_css_selector("input[type=\"submit\"]").click()
 
         # Go to reports tab
-        driver.find_element_by_id("survey-report").click()
+        driver.find_element_by_id("survey-setup").click()
 
-
-        num_elements = len(driver.find_elements_by_link_text("create new report"))
+        num_elements = len(driver.find_elements_by_css_selector("td.t-col-role"))
         for i in xrange(0, num_elements):
-            # generate spreadsheet
-            driver.find_elements_by_link_text("create new report")[i].click()
-            Select(driver.find_element_by_name("REPORT_TYPE")).select_by_visible_text("CSV - Full Spreadsheet")
-            driver.find_element_by_xpath("//a[@onclick=\"checkAll('single_result_')\"]").click()
-            driver.find_element_by_css_selector("input[type=\"button\"]").click()
-
-            # generate html report
-            driver.find_elements_by_link_text("create new report")[i].click()
-            Select(driver.find_element_by_name("REPORT_TYPE")).select_by_visible_text("HTML - Summary")
-            driver.find_element_by_css_selector("input[type=\"button\"]").click()
+            # select roles for the next survey
+            try:
+                driver.find_elements_by_css_selector("td.t-col-role")[i].click()
+            except:
+                # hit the toggle
+                driver.find_element_by_id("folder_2").click()
+                # retry
+                driver.find_elements_by_css_selector("td.t-col-role")[i].click()
+            
+            # select correct box and type in netid
+            netid_input = driver.find_element_by_id(text_field_ids[self.new_user_type])
+            netid_input.clear()
+            netid_input.send_keys(self.new_user)
+            
+            # submit the netid
+            driver.find_element_by_id(button_ids[self.new_user_type]).click()
+        
+            # Go back to the setup page
+            driver.find_element_by_css_selector("#back > input").click()
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
