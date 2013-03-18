@@ -1,12 +1,7 @@
 #! python
 
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import NoSuchElementException
-from secrets import netid, password
-
 import unittest, time, re
+from survey_script import SurveyScript
 
 text_field_ids = {
     "viewer": "viewer_add",
@@ -20,7 +15,7 @@ button_ids = {
     "admin": "admin_add_user"
 }
 
-class AddUser(unittest.TestCase):
+class AddUser(SurveyScript):
     def setUp(self):
         # Get user input
         self.new_user = raw_input("netid of new user: ")
@@ -29,24 +24,14 @@ class AddUser(unittest.TestCase):
         while (self.new_user_type not in text_field_ids):
             self.new_user_type = raw_input("user type (editor, admin, or viewer): ")
         
-        # Now open Firefox
-        self.driver = webdriver.Firefox()
-        self.driver.implicitly_wait(30)
-        self.base_url = "https://illinois.edu/"
-        self.verificationErrors = []
-        self.accept_next_alert = True
+        super(AddUser, self).setUp()
     
     def test_add_user(self):
         driver = self.driver
         driver.get(self.base_url + "toolbox")
         
         # Authenticate
-        driver.find_element_by_id("UserID").clear()
-        driver.find_element_by_id("UserID").send_keys(netid)
-        driver.find_element_by_css_selector("input[type=\"submit\"]").click()
-        driver.find_element_by_id("Password").clear()
-        driver.find_element_by_id("Password").send_keys(password)
-        driver.find_element_by_css_selector("input[type=\"submit\"]").click()
+        self.authenticate()
 
         # Go to reports tab
         driver.find_element_by_id("survey-setup").click()
@@ -72,25 +57,6 @@ class AddUser(unittest.TestCase):
         
             # Go back to the setup page
             driver.find_element_by_css_selector("#back > input").click()
-    
-    def is_element_present(self, how, what):
-        try: self.driver.find_element(by=how, value=what)
-        except NoSuchElementException, e: return False
-        return True
-    
-    def close_alert_and_get_its_text(self):
-        try:
-            alert = self.driver.switch_to_alert()
-            if self.accept_next_alert:
-                alert.accept()
-            else:
-                alert.dismiss()
-            return alert.text
-        finally: self.accept_next_alert = True
-    
-    def tearDown(self):
-        self.driver.quit()
-        self.assertEqual([], self.verificationErrors)
 
 if __name__ == "__main__":
     unittest.main()
