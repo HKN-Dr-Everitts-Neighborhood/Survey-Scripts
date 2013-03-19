@@ -1,5 +1,6 @@
 #! python
 
+from selenium.webdriver.support.ui import Select
 import unittest, time, re
 from survey_script import SurveyScript
 
@@ -10,7 +11,7 @@ class GenerateReports(SurveyScript):
         driver.get(self.base_url + "toolbox")
         
         # Authenticate
-        common.authenticate(driver)
+        self.authenticate()
 
         # Go to reports tab
         driver.find_element_by_id("survey-report").click()
