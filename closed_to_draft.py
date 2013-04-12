@@ -18,8 +18,8 @@ class DraftSurveys(SurveyScript):
 
         num_elements = len(driver.find_elements_by_css_selector("td.t-col-edit-form > a"))
         
-        # so it turns out that only closed survyes have the t-col-edit-form class; hence why we are using
-        # element 0 at each iteration
+        # so it turns out that only open & closed surveys have the t-col-edit-form class; hence why we are using
+        # element 0 at each iteration.  This might cause trouble if we have some open surveys.
         for i in xrange(0, num_elements):
             # click edit form
             try:

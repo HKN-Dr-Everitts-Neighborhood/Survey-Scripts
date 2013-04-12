@@ -17,8 +17,8 @@ class OpenSurveys(SurveyScript):
 
         num_elements = len(driver.find_elements_by_css_selector("td.t-col-edit > a"))
         
-        # so it turns out that only closed survyes have the t-col-edit-form class; hence why we are using
-        # element 0 at each iteration
+        # so it turns out that only surveys in draft mode have the t-col-edit class; hence why we can
+	# just get the first element with that class at every iteration of this loop.
         for i in xrange(0, num_elements):
             # click edit form
             try:

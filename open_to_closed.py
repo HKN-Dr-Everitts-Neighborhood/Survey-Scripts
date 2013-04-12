@@ -17,8 +17,7 @@ class CloseSurveys(SurveyScript):
 
         num_elements = len(driver.find_elements_by_css_selector("td.t-col-edit-form > a"))
         
-        # so it turns out that only closed survyes have the t-col-edit-form class; hence why we are using
-        # element 0 at each iteration
+        # closed and open surveys have the t-col-edit-form class.
         for i in xrange(0, num_elements):
             # click edit form
             try:
@@ -31,6 +30,10 @@ class CloseSurveys(SurveyScript):
             
             # click start survey
             end_button = driver.find_elements_by_css_selector("input[value=\"End Survey\"]")
+	    
+	    # check if we found the button; if not, this survey wasn't open (it was probably closed, since we are
+	    # looking at all surveys with the t-col-edit-form class, which is both open and closed surveys).
+	    # We should ignore it and move on; this makes this script more fault-tolerant.
             if (len(end_button) == 1):
                 end_button[0].click()
                 self.assertEqual(
