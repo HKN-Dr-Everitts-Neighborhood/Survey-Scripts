@@ -6,21 +6,27 @@ A repo for all the scripts we have to help out with surveys.
 Scripts
 =======
 
+Managing Reports:
+
 * generate_reports.py: makes 2 reports per survey - an html summary report, and a csv full report (single response checked).
 * download_reports.py: downloads all reports that have been generated.  Note the global variable which specifies the folder to download to.
 *delete_reports.py: deletes all reports that have been generated.  Meant to clean up the "My Reports" tab.
 
+Managing existing surveys:
 
 * add_user.py: goes through all surveys and shares them with a specified user giving them the specified privileges.
-* survey_stats.py: a simple script that counts the number of responses in a set of data downloaded by download_reports.
 * closed_to_draft.py: goes through all closed surveys and flips them into the draft phase.  ISSUE: if you have surveys that are open, it will try to move them to draft phase and fail.
 * draft_to_open.py: goes through all surveys and opens them for responses.
 * open_to_closed.py: goes through all surveys and closes the open ones (stop allowing responses).
 
+Creating more surveys:
 
-* survey_stats.py: meant to help count the number of responses gathered from downloaded reports.
 * survey.py: a component meant for use with the new_surveys script.  Run alone, though, and it will read & validate the survey roster and survey template.
 * new_surveys: a script that examines a roster file and a template file and goes and creates surveys according to all this information.  More information below.  The script will tell you it's usage if run with the wrong number of arguments.
+
+Data Processing:
+
+* survey_stats.py: a simple script that counts the number of responses in a set of data downloaded by download_reports.
 
 Dependencies
 ============
