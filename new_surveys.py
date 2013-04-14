@@ -60,13 +60,14 @@ class NewSurveys(SurveyScript):
 				elif (question.type == "Long Answer"):
 					driver.find_element_by_link_text("Long Answer").click()
 				elif (question.type == "Radio" or question.type == "Checkbox"):
-					# Remember todo Other
+					
 					driver.find_element_by_link_text(question.type).click()
 					
-					if "Other" in question.answers:
+					# handle other
+					if "Other" in question.answers or "other" in question.answers:
 						driver.find_element_by_link_text("yes").click()
 						
-					answers = filter(lambda x: x != 'Other', question.answers)
+					answers = filter(lambda x: x != 'Other' and x != 'other', question.answers)
 					
 					answer_box = driver.find_element_by_css_selector("#addAnswers")
 					answer_box.clear()

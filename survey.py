@@ -12,6 +12,15 @@ class Question:
         rank: used to sort the questions
         required: whether or not the question is required.  Default is not required.
         '''
+	
+	assert type in ['Long Answer', 'Short Answer', 'Radio', 'Checkbox'] , "Question type %s is not supported" % type
+	assert isinstance(required, bool), "Required must be a boolean, but %s is not a boolean" % required
+	assert isinstance(question, basestring), "question must be a string, but %s is not a string" % question 
+	assert isinstance(answers, list), "answers must be a list of strings; %s is not a list" % answers
+	for a in answers:
+		assert isinstance(a, basestring), "answers must be a list of strings; %s is not a string" % a
+	assert isinstance(rank, int), "rank must be an integer, not %s" % rank
+	
         self.required = required
         self.question = question
         self.type = type
@@ -64,6 +73,7 @@ def instantiate_template(template_csv, survey_info):
     # read the row from the survey roster that describes this survey
     custom_answers = {}
     custom_questions = []
+    name, submit_once = None, None
     for (col, datum) in survey_info:
         if col == "Name":
             name = datum
@@ -83,12 +93,14 @@ def instantiate_template(template_csv, survey_info):
         else:
             assert False, "Bad column name in survey roster: %s" % col
     
+    assert name is not None and submit_once is not None, "Missing Name or single submission column"
+    
     survey = Survey(name, submit_once)
     
     # verify template validity
     # Going for a very strict format for easier parsing.  Columns must be in specified order.
     assert len(template_header) == 6, "Missing column in template!"
-    for colhead, shouldbe in zip(template_header, ['Id', 'Questions', 'Type', 'Required', 'Answers', 'Rank']):
+    for colhead, shouldbe in zip(template_header, ['Id', 'Question', 'Type', 'Required', 'Answers', 'Rank']):
         assert colhead == shouldbe, "Invalid column in template: %s" % colhead
     
     for line in template_rows:
@@ -97,8 +109,6 @@ def instantiate_template(template_csv, survey_info):
         type = line[2]
         required = yesno_to_bool(line[3], 'required')
         
-	assert type in ['Long Answer', 'Short Answer', 'Radio', 'Checkbox'] , "Question type %s is not supported" % type
-	
         # deal with custom answers per survey.
         # note we check one of the two error cases - where the survey roster is missing the column for
         # custom answers; the other case, where the survey roster has extra columns, is unlikely to happen;
