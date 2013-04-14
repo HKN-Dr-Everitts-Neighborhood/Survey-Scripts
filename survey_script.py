@@ -9,7 +9,13 @@ from secrets import netid, password
 class SurveyScript(unittest.TestCase):
     
     def setUp(self):
-        self.driver = webdriver.Firefox()
+        
+        firefox_prof = webdriver.FirefoxProfile()
+        #firefox_prof.add_extension('httpfox-0.8.10.xpi')
+        firefox_prof.set_preference('permissions.default.image', 2)
+        
+        self.driver = webdriver.Firefox(firefox_profile=firefox_prof)
+        
         self.driver.implicitly_wait(6)
         self.base_url = "https://illinois.edu/"
         self.verificationErrors = []

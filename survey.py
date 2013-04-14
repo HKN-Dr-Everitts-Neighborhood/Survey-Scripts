@@ -39,7 +39,11 @@ class Survey:
 def make_surveys():
     '''open up the files and generate surveys from them'''
     
-    assert len(sys.argv) == 3, "Usage: %s <survey_roster> <survey_template>" % sys.argv[0]
+    if len(sys.argv) == 5 and sys.argv[3] == '-restart':
+        restart_at = int(sys.argv[4])
+    else:
+        assert len(sys.argv) == 3, "Usage: %s <survey_roster> <survey_template> [-restart <number>]" % sys.argv[0]
+        restart_at = 0
     
     with open(sys.argv[1], 'r') as survey_roster:
         roster_csv = [line for line in csv.reader(survey_roster)]
@@ -48,7 +52,7 @@ def make_surveys():
         template_csv = [line for line in csv.reader(template_file)]
     
     roster_header = roster_csv[0]
-    roster_rows = roster_csv[1:]
+    roster_rows = roster_csv[1:][restart_at:] # ignore all rows before restart_at
     
     return [ instantiate_template(template_csv, zip(roster_header, roster_line))
                 for roster_line in roster_rows ]
