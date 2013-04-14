@@ -21,7 +21,7 @@ Managing existing surveys:
 
 Creating more surveys:
 
-* survey.py: a component meant for use with the new_surveys script.  Run alone, though, and it will read & validate the survey roster and survey template.
+* survey.py: a component meant for use with the new_surveys script.  Run alone, though, and it will read & validate the survey roster and survey template.  Note: this script works standalone (no need to install other packages).
 * new_surveys: a script that examines a roster file and a template file and goes and creates surveys according to all this information.  More information below.  The script will tell you it's usage if run with the wrong number of arguments.
 
 Data Processing:

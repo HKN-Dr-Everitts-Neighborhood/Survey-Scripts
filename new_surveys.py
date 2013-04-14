@@ -72,6 +72,8 @@ class NewSurveys(SurveyScript):
 					answer_box = driver.find_element_by_css_selector("#addAnswers")
 					answer_box.clear()
 					answer_box.send_keys('\n'.join(answers))
+					
+					driver.find_element_by_css_selector("input[value=\"Add\"]").click()
 				
 				driver.find_element_by_css_selector("input[value=\"Save\"]").click()
 				driver.find_element_by_css_selector("input[value=\"Back\"]").click()
