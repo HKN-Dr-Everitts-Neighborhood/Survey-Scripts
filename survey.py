@@ -36,8 +36,11 @@ class Survey:
     def add_question(self, q):
         self.questions.append(q)
 
-def make_surveys():
-    '''open up the files and generate surveys from them'''
+def parse_args():
+    '''reads command line parameters and returns (roster_filename, template_filename, restart_at)
+    
+    If the command line parameters don't match the intended usage, this should throw an exception.
+    '''
     
     if len(sys.argv) == 5 and sys.argv[3] == '-restart':
         restart_at = int(sys.argv[4])
@@ -45,10 +48,15 @@ def make_surveys():
         assert len(sys.argv) == 3, "Usage: %s <survey_roster> <survey_template> [-restart <number>]" % sys.argv[0]
         restart_at = 0
     
-    with open(sys.argv[1], 'r') as survey_roster:
+    return (sys.argv[1], sys.argv[2], restart_at)
+
+def make_surveys(roster_filename, template_filename, restart_at):
+    '''open up the files and generate surveys from them'''
+    
+    with open(roster_filename, 'r') as survey_roster:
         roster_csv = [line for line in csv.reader(survey_roster)]
     
-    with open(sys.argv[2], 'r') as template_file:
+    with open(template_filename, 'r') as template_file:
         template_csv = [line for line in csv.reader(template_file)]
     
     roster_header = roster_csv[0]
@@ -131,4 +139,4 @@ def instantiate_template(template_csv, survey_info):
     return survey
 
 if __name__ == '__main__':
-    make_surveys()
+    make_surveys(*parse_args())

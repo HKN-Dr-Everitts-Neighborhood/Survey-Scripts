@@ -7,7 +7,11 @@ import survey, time
 class NewSurveys(SurveyScript):
     def __init__(self):
         
-        self.surveys = survey.make_surveys()
+        args = survey.parse_args()
+        self.surveys = survey.make_surveys(*args)
+        
+        # third argument is where to start from.  Need this to give proper cleanup instructions to the user in case of an error.
+        self.started_from = args[2]
         
         super(NewSurveys, self).setUp()
     
@@ -17,7 +21,7 @@ class NewSurveys(SurveyScript):
         
         # Authenticate
         self.authenticate()
-        time.sleep(3)
+        time.sleep(5)
 
         for i, survey in enumerate(self.surveys):
             try:
@@ -83,7 +87,8 @@ class NewSurveys(SurveyScript):
                 driver.find_element_by_css_selector("input[value=\"Back\"]").click()
                     
             except Exception:
-                print "Warning: exception encountered while generating survey %s.  Delete the survey and restart on survey #%s (use the -restart flag)." % (survey.name, i)
+                print ("Warning: exception encountered while generating survey %s. " +
+                         "Delete the survey and restart on survey #%s (use the -restart flag).") % (survey.name, i+self.started_from)
                 raise
 
 if __name__ == "__main__":
