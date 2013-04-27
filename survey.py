@@ -75,6 +75,8 @@ def yesno_to_bool(input, error_in):
     else:
         assert False, "Value '%s' for %s should be yes or no" % (repr(input), error_in)    
 
+ignore_cols = set()
+
 def instantiate_template(template_csv, survey_info):
     '''Does all the actual interpretation of the csv data.  Returns a Survey.'''
     
@@ -103,7 +105,9 @@ def instantiate_template(template_csv, survey_info):
             # custom answers
             custom_answers[col.partition(':')[0]] = datum
         else:
-            assert False, "Bad column name in survey roster: %s" % col
+            if col not in ignore_cols:
+                print "ignoring column '%s' in survey roster" % col
+                ignore_cols.add(col)
     
     assert name is not None and submit_once is not None, "Missing Name or single submission column"
     

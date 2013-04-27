@@ -21,7 +21,6 @@ class NewSurveys(SurveyScript):
         
         # Authenticate
         self.authenticate()
-        time.sleep(5)
 
         for i, survey in enumerate(self.surveys):
             try:

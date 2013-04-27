@@ -18,7 +18,6 @@ class DownloadReports(SurveyScript):
         self.authenticate()
     
         # navigate to the reports page
-        time.sleep(3)
         driver.find_element_by_id("survey-report").click()
         driver.find_element_by_link_text("My Reports").click()
         

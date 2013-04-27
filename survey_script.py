@@ -29,6 +29,13 @@ class SurveyScript(unittest.TestCase):
         driver.find_element_by_id("Password").clear()
         driver.find_element_by_id("Password").send_keys(password)
         driver.find_element_by_css_selector("input[type=\"submit\"]").click()
+        
+        # pause while page loads.
+        # for whatever reason, our implicity_wait isn't good enough
+        # for clicks on survey-setup / survey-report that usually come
+        # right after authenticating - my guess is that these links are
+        # displayed but don't have the proper click handlers right away.
+        time.sleep(4)
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
