@@ -13,6 +13,9 @@ class NewSurveys(SurveyScript):
         # third argument is where to start from.  Need this to give proper cleanup instructions to the user in case of an error.
         self.started_from = args[2]
         
+        if (self.started_from != 0):
+            print "Starting from", self.started_from, "which is", self.surveys[0].name
+        
         super(NewSurveys, self).setUp()
     
     def make_new_surveys(self):
