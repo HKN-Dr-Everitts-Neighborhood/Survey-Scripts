@@ -22,7 +22,7 @@ Managing existing surveys:
 Creating more surveys:
 
 * survey.py: a component meant for use with the new_surveys script.  Run alone, though, and it will read & validate the survey roster and survey template.  Note: this script works standalone (no need to install other packages).
-* new_surveys: a script that examines a roster file and a template file and goes and creates surveys according to all this information.  More information below.  The script will tell you it's usage if run with the wrong number of arguments.
+* new_surveys.py: a script that examines a roster file and a template file and goes and creates surveys according to all this information.  More information below.  The script will tell you it's usage if run with the wrong number of arguments.
 
 Data Processing:
 
@@ -34,6 +34,15 @@ Dependencies
 These scripts depend on selenium, requests, and beautifulsoup.  See setup_notes.txt for info on how to install these python packages.
 
 Note also that you'll need to write your own secrets.py to get this to work.  secrets requires two variables: netid and password - i.e. your bluestem login credentials.
+
+Design Philosophy
+===============
+
+While building a level on top of toolbox, because of the quirkiness in using toolbox via Selenium, it has been important to take into account how these scripts handle faults.  I decided to try to keep our abstractions on top of toolbox simple for this reason, since these scripts depend on the state of the surveys.  Most of the scripts were written to be idempotent - if they fail in the middle, you can just rerun them and they'll either skip or redo the work they've already done, with no problems caused - if the end successfully, the surveys will be in a valid state.
+
+This philosophy has interesting consequences - e.g. generating & downloading the reports are separate steps to avoid trouble - if this was done in one step, the queue of reports to generate could get in the way at random times.
+
+The main exception to this philosophy is new_surveys.py.  Creating new surveys is inherently a non-idempotent task (and toolbox has the unfortunate bug that creating two surveys with the same name hides the first one).  When this script crashes, it'll spit out a stack trace and a message (above the stack trace) telling you how to restart it so it picks up where it leaves off - this involves deleting any half-created survey (it'll tell you which) and then restarting the script with the proper parameters so it'll restart at the right spot.
 
 Survey Roster & Template file formats
 ==============================
