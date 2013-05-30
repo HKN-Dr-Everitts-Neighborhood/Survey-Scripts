@@ -8,11 +8,13 @@ from secrets import netid, password
 
 class SurveyScript(unittest.TestCase):
     
-    def setUp(self):
+    def setUp(self, images=False):
         
         firefox_prof = webdriver.FirefoxProfile()
         #firefox_prof.add_extension('httpfox-0.8.10.xpi')
-        firefox_prof.set_preference('permissions.default.image', 2)
+        
+        if not images:
+            firefox_prof.set_preference('permissions.default.image', 2)
         
         self.driver = webdriver.Firefox(firefox_profile=firefox_prof)
         
