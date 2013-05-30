@@ -36,6 +36,8 @@ class DownloadReports(SurveyScript):
             filename = name.text
             filename = filename.replace("/", "_")
             filename = filename.replace("\\", "_")
+            filename = filename.replace(".", "_")
+            filename = filename.replace(":", '-')
             
             # fetch the data with the requests library.
             # the cookie is required to prove we have authenticated.
