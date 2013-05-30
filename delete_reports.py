@@ -19,6 +19,7 @@ class DeleteReports(SurveyScript):
         num_elements = len(driver.find_elements_by_css_selector("td.t-col-delete"))
         for i in xrange(0, num_elements):
             driver.find_element_by_css_selector("td.t-col-delete").click()
+            time.sleep(.25)
             self.assertEqual(
                 "Confirm delete?",
                 self.close_alert_and_get_its_text()
