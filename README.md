@@ -8,7 +8,7 @@ Scripts
 
 Managing Reports:
 
-* generate_reports.py: makes 2 reports per survey - an html summary report, and a csv full report (single response checked).
+* generate_reports.py: makes 2 reports per survey - an html summary report, and a csv full report (single response checked).  If this fails, run delete_reports.py to clean up and run it again, otherwise you'll generate/download duplicate reports.
 * download_reports.py: downloads all reports that have been generated.  Note the global variable which specifies the folder to download to.
 * delete_reports.py: deletes all reports that have been generated.  Meant to clean up the "My Reports" tab.
 
